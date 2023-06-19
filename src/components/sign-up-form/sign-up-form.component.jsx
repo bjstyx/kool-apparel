@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import FormInput from "../form-input/form-input.components";
 
@@ -7,6 +7,8 @@ import { createAuthUserWithEmailandPassword, createUserDocumentFromAuth } from "
 import './sign-up-form.styles.scss';
 
 import Button from "../../components/button/button.component";
+
+import { UserContext } from "../../contexts/user.context";
 
 const defaultFormFields = {
     displayName: '',
@@ -19,7 +21,9 @@ const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const { displayName, email, password, confirmPassword } = formFields;
 
-    console.log(formFields);
+    const { setCurrentUser } = useContext(UserContext);
+
+
 
     const resetFormFields = () => {
         setFormFields(defaultFormFields);
@@ -39,6 +43,8 @@ const SignUpForm = () => {
                 email, 
                 password
             );
+
+        setCurrentUser(user);
             
         await createUserDocumentFromAuth(user, { displayName });
         resetFormFields();
@@ -70,6 +76,7 @@ const SignUpForm = () => {
                     required 
                     onChange={handleChange} 
                     name="displayName" 
+                    autocomplete='username'
                     value={displayName} 
                 />
 
@@ -80,6 +87,7 @@ const SignUpForm = () => {
                     required 
                     onChange={handleChange} 
                     name="email" 
+                    autocomplete='username' 
                     value={email} 
                 />
 
@@ -90,6 +98,7 @@ const SignUpForm = () => {
                     required 
                     onChange={handleChange} 
                     name="password" 
+                    autocomplete='current-password'
                     value={password} 
                 />
 
@@ -100,6 +109,7 @@ const SignUpForm = () => {
                     required 
                     onChange={handleChange} 
                     name="confirmPassword" 
+                    autocomplete='current-password'
                     value={confirmPassword} 
                 />
 
